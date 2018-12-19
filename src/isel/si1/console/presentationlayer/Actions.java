@@ -264,15 +264,25 @@ public class Actions {
 
 				BicicletaMenu bicicletaMenu = new BicicletaMenu(estacaoID);
 
-				System.out.print("Select one of the available Biciletas:\n");
+				if(bicicletaMenu.menuItems.size()>0) {
 
-				for (int option = 0; option < bicicletaMenu.menuItems.size(); ++option ) {
-					BicicletaMenu.MenuItem item = bicicletaMenu.menuItems.get(option);
-					System.out.println(option + " - " + item.description);
+					System.out.print("Select one of the available Biciletas:\n");
+
+					for (int option = 0; option < bicicletaMenu.menuItems.size(); ++option) {
+						BicicletaMenu.MenuItem item = bicicletaMenu.menuItems.get(option);
+						System.out.println(option + " - " + item.description);
+					}
+
+					opcao = input.nextInt();
+
+					int bicicletaID = bicicletaMenu.menuItems.get(opcao).idBicicleta;
+
+
 				}
 
-				opcao = input.nextInt();
+			}else{
 
+				System.out.print("No Bicicletas available at this Station!");
 			}
 
 		}
