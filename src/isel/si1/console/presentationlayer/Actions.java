@@ -1,6 +1,7 @@
 package isel.si1.console.presentationlayer;
 
 import isel.si1.businesslayer.*;
+import isel.si1.model.Bicicleta;
 import isel.si1.model.DocaBicicleta;
 import isel.si1.model.Utilizador;
 
@@ -261,7 +262,17 @@ public class Actions {
 
 			if(bicicletasEmEstacao.size() > 0){
 
-				System.out.print("blabla");
+				BicicletaMenu bicicletaMenu = new BicicletaMenu(estacaoID);
+
+				System.out.print("Select one of the available Biciletas:\n");
+
+				for (int option = 0; option < bicicletaMenu.menuItems.size(); ++option ) {
+					BicicletaMenu.MenuItem item = bicicletaMenu.menuItems.get(option);
+					System.out.println(option + " - " + item.description);
+				}
+
+				opcao = input.nextInt();
+
 			}
 
 		}
