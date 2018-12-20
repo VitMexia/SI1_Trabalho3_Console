@@ -14,12 +14,14 @@ public class ListUserMenus {
     {
         public String description;
         public int id_Passe;
+        public String emailUser;
 
 
-        public MenuItem(String  description, int id_Passe){
+        public MenuItem(String  description, int id_Passe, String emailUser){
 
             this.description = description;
             this.id_Passe = id_Passe;
+            this.emailUser = emailUser;
         }
 
     }
@@ -41,7 +43,7 @@ public class ListUserMenus {
 
             ListUserMenus.MenuItem item = new ListUserMenus.MenuItem("Email: " + utilizador.email
                     + ", Name: " + utilizador.nome
-                    , utilizador.id_Passe);
+                    , utilizador.id_Passe, utilizador.email);
             menuItems.add(item);
 
         }

@@ -3,7 +3,13 @@ package isel.si1.console.presentationlayer;
 import isel.si1.businesslayer.*;
 import isel.si1.model.DocaBicicleta;
 import isel.si1.model.Utilizador;
+import isel.si1.model.Viagem;
 
+import java.sql.Timestamp;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Scanner;
@@ -11,21 +17,13 @@ import java.util.Scanner;
 
 
 public class Actions {
-	
-	//private IStudentService studentService;
+
 	private IUtilizadorService utilizadorService;
-	
-	
-	//public IStudentService getStudentService() {
-//		return studentService;
-//	}
+
 	public IUtilizadorService getUtilizadoresService() {
 		return utilizadorService;
 	}
 
-	//public void setStudentService(IStudentService studentService) {
-//		this.studentService = studentService;
-//	}
 
 	public void setUtilizadorService(IUtilizadorService utilizadorService) {
 		this.utilizadorService = utilizadorService;
@@ -50,44 +48,10 @@ public class Actions {
 			console.Terminate();
 		}
 	}
-	
-	/*Option 1*/
-	public void About(Scanner input, Console console) 
-	{
-//		Configuration.AboutConfiguration about = Configuration.getInstance().About;
-//
-//		System.out.println("");
-//		System.out.println(about.SchoolName);
-//		System.out.println(about.DepartmentName);
-//		System.out.println(about.GroupNumber + "# Group number of " + about.Curse);
-//		System.out.println("");
-	}
 
-	/*Option 2*/
-//	public void ListStudents(Scanner input, Console console) throws ServiceException
-//	{
-//		System.out.println("\nListing the Students.");
-//
-//		List<Student> curses = studentService.GetStudents();
-//		Iterator<Student> it = curses.iterator();
-//
-//		if(!it.hasNext())
-//		{
-//			System.out.println("No available students!");
-//		}
-//		else
-//		{
-//			Utilities.PrintTableHeaderForStudents();
-//			while (it.hasNext())
-//			{
-//				Utilities.PrintStudent(it.next());
-//			}
-//		}
-//		System.out.println("");
-//	}
 
-	public void ListUtilizadores(Scanner input, Console console) throws ServiceException
-	{
+
+	public void ListUtilizadores(Scanner input, Console console) throws ServiceException {
 		System.out.println("\nListing Utilizadores.");
 
 		List<Utilizador> users = utilizadorService.getUtilizadores();
@@ -106,22 +70,6 @@ public class Actions {
 			}
 		}
 		System.out.println("End");
-	}
-	
-	public void XXX(Scanner input, Console console){
-	    System.out.println("XXX");
-	}
-	
-	//TODO
-	// Insert more action menu items. 
-	// The methods must have the following signature "public void [METHODNAME](Scanner input) throws BusinessException"
-
-	/*Option 3*/
-	public void OptionNumber3(Scanner input, Console console) throws ServiceException
-	{
-		System.out.println();
-		System.out.println("Not yet implemented!!!");
-		System.out.println();
 	}
 
 	public void AddUser(Scanner input, Console console) throws ServiceException{
@@ -189,6 +137,7 @@ public class Actions {
 		}
 
 	}
+
 	public void DeleteEmployee(Scanner input, Console console) throws ServiceException {
 
 		System.out.print("Please select the Pessoa type to delete:\n");
@@ -231,6 +180,69 @@ public class Actions {
 
 	}
 
+	public void getTrips(Scanner input, Console console) throws ServiceException, ParseException {
+
+		System.out.print("\nChoose User you want to see trips from:\n");
+
+		ListUserMenus listUserMenus = new ListUserMenus();
+
+		for (int option = 0; option < listUserMenus.menuItems.size(); ++option ) {
+			ListUserMenus.MenuItem item = listUserMenus.menuItems.get(option);
+			System.out.println(option + " - " + item.description);
+		}
+
+		int useroption = -1;
+		int id_Passe = -1;
+		String emailUser = "";
+		Date startTS;
+		Date endTS;
+
+		if(input.hasNextInt()){
+
+			useroption = input.nextInt();
+
+			id_Passe = listUserMenus.menuItems.get(useroption).id_Passe;
+			emailUser = listUserMenus.menuItems.get(useroption).emailUser;
+		}
+
+		if(emailUser != "") {
+
+			DateFormat format = new SimpleDateFormat("yyyy-MM-dd");
+			//Date date = format.parse(string);
+
+			System.out.print("\nPlease provide Initial Date (yyyy-mm-dd):\n");
+
+			input.nextLine();
+			startTS = format.parse(input.nextLine());
+
+
+			System.out.print("\nPlease provide Final Date (yyyy-mm-dd):\n");
+
+			endTS  = format.parse(input.nextLine());
+
+			ViagemService viagemService = new ViagemService();
+
+			List<Viagem> viagem = viagemService.getViagensBicicleta(id_Passe, startTS, endTS);
+			Iterator<Viagem> it = viagem.iterator();
+
+			if(!it.hasNext())
+			{
+				System.out.println("No available Viagens for the time frame!");
+			}
+			else
+			{
+				Utilities.PrintTableHeaderForViagemBicicleta();
+
+				while (it.hasNext())
+				{
+					Utilities.PrintViagemBicicleta(it.next(), emailUser);
+				}
+			}
+
+		}
+
+
+		}
 
 	public void createTrip(Scanner input, Console console) throws ServiceException {
 
@@ -296,10 +308,6 @@ public class Actions {
 
 						int bicicletaID = bicicletaMenu.menuItems.get(opcao).idBicicleta;
 
-
-//					BicicletaService bicicletaService = new BicicletaService();
-//					List<Bicicleta> bicicletaList = bicicletaService.getAvailableBicicletas(id_Estacao);
-
 						ViagemService viagemService = new ViagemService();
 						int createdtrip = viagemService.createTrip(id_passe, bicicletaID, estacaoID);
 
@@ -318,6 +326,100 @@ public class Actions {
 
 			}
 		}
+
+	}
+
+	public void closeTrip(Scanner input, Console console) throws ServiceException {
+
+		System.out.print("\nPlease select the trip that is ending:\n");
+
+		OpenTripsMenu openTripsMenu = new OpenTripsMenu();
+
+		int opcao = -1;
+		int idPasse = -1;
+		Timestamp dataInicial;
+
+		for (int option = 0; option < openTripsMenu.menuItems.size(); ++option) {
+			OpenTripsMenu.MenuItem item = openTripsMenu.menuItems.get(option);
+			System.out.println(option + " - " + item.description);
+		}
+
+		opcao = input.nextInt();
+
+		if(opcao>-1){
+
+			idPasse = openTripsMenu.menuItems.get(opcao).id_Passe;
+			dataInicial = openTripsMenu.menuItems.get(opcao).data_inicial;
+
+			System.out.print("\nPlease select the end station:\n");
+
+			EstacaoMenu estacaoMenu = new EstacaoMenu();
+
+			for (int option = 0; option < estacaoMenu.menuItems.size(); ++option) {
+				EstacaoMenu.MenuItem item = estacaoMenu.menuItems.get(option);
+				System.out.println(option + " - " + item.description);
+			}
+			int opcao2 = -1;
+
+			int estacaoID = -1;
+
+			if (input.hasNextInt()) {
+				opcao2 = input.nextInt();
+
+				estacaoID = estacaoMenu.menuItems.get(opcao).idEstacao;
+			}
+
+			if(estacaoID > -1) {
+
+				ViagemService viagemService = new ViagemService();
+
+				int endTrip = -1;
+				int star = -1;
+				String review = "";
+
+				idPasse = openTripsMenu.menuItems.get(opcao).id_Passe;
+
+				Boolean evaluation = Utilities.YesOrNoQuestion(input, "Do you want to leave an evaluation?\n");
+
+				if (evaluation) {
+
+
+					while(star <1 || star >5){
+						System.out.println("Please provide a rating from 1 to 5: \n");
+						if (input.hasNextInt()) {
+							star = input.nextInt();
+						}
+					}
+
+					Boolean message = Utilities.YesOrNoQuestion(input, "Do you want to leave a review?\n");
+
+					if(message){
+						while(review == ""){
+							System.out.println("Please ,feel free to write a review: \n");
+
+							review = input.nextLine();
+						}
+						endTrip = viagemService.endTrip(idPasse, dataInicial,estacaoID,star, review);
+					}
+					else{
+						endTrip = viagemService.endTrip(idPasse, dataInicial,estacaoID,star, "");
+					}
+
+				}
+				else {
+
+					endTrip = viagemService.endTrip(idPasse, dataInicial,estacaoID,-1, "");
+				}
+
+				if(endTrip >0){
+					System.out.println("Trip Ended!");
+				}
+				else {
+					System.out.println("Unable to end trip! please try again!");
+				}
+			}
+		}
+
 
 	}
 

@@ -5,6 +5,7 @@ import isel.si1.datalayer.ViagemDAO;
 import isel.si1.datalayer.common.DatabaseException;
 import isel.si1.model.Viagem;
 
+import java.sql.Timestamp;
 import java.util.Date;
 import java.util.List;
 
@@ -25,8 +26,13 @@ public class ViagemService implements IViagemService {
     }
 
     @Override
-    public List<Viagem> getViagens(String email, Date dataIncial, Date dataFinal) throws ServiceException {
-        return null;
+    public List<Viagem> getViagensBicicleta(int id_Passe, Date dataIncial, Date dataFinal) throws ServiceException {
+        try {
+            return viagemDAO.getViagensBicicleta(id_Passe, dataIncial, dataFinal);
+        }
+        catch (DatabaseException exception) {
+            throw new ServiceException(exception.getMessage(), exception);
+        }
     }
 
     @Override
@@ -40,7 +46,22 @@ public class ViagemService implements IViagemService {
     }
 
     @Override
-    public int endTrip(Date dataFinal, int id_Estacao_Final, int avaliação, String mensagem) throws ServiceException {
-        return 0;
+    public int endTrip(int id_Passe, Timestamp data_Inicial, int id_Estacao_Final, int avaliação, String mensagem) throws ServiceException {
+        try {
+            return viagemDAO.endTrip(id_Passe, data_Inicial, id_Estacao_Final, avaliação, mensagem);
+        }
+        catch (DatabaseException exception) {
+            throw new ServiceException(exception.getMessage(), exception);
+        }
+    }
+
+    @Override
+    public List<Viagem> getOpenedViagens() throws ServiceException {
+        try {
+            return viagemDAO.getOpenedViagens();
+        }
+        catch (DatabaseException exception) {
+            throw new ServiceException(exception.getMessage(), exception);
+        }
     }
 }

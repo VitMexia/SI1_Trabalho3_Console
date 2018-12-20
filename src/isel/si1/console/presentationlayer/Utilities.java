@@ -1,6 +1,7 @@
 package isel.si1.console.presentationlayer;
 
 import isel.si1.model.Utilizador;
+import isel.si1.model.Viagem;
 
 import java.util.Scanner;
 
@@ -84,7 +85,7 @@ public class Utilities {
 	}
 	
 	
-	/* Student*/
+
 	public static void PrintTableHeaderForUsers()
 	{
 		System.out.printf("%-15s%-25s%-20s%-15s%-15s%-25s%-10s\n","Nome", "Email", "NIF", "ID_PASSE", "Saldo", "Referencia", "Data Registo/Aquisicao");
@@ -94,11 +95,25 @@ public class Utilities {
 
 	public static void PrintUtilizador(Utilizador utilizador)
 	{
-//		String name = student.Name.length()>15?student.Name.substring(0, 14):student.Name;
-//		String address = student.Address.length()>20?student.Address.substring(0, 19):student.Address;
 		System.out.printf("%-15s%-25s%-20d%-15d%-15f%-25s%-10s\n",
 					utilizador.nome, utilizador.email, utilizador.nif,
 					utilizador.id_Passe, utilizador.saldo, utilizador.referencia,
 					utilizador.data_Registo_Aquisicao.toString() );
+	}
+
+	public static void PrintTableHeaderForViagemBicicleta()
+	{
+		System.out.printf("%-25s%-25s%-20s%-15s%-15s%-10s%-15s%-15s\n","Email", "DataInicial", "Designação", "Raio Rodas", "Valor Viagem",
+				"Peso", "Tipo", "Autonomia");
+		System.out.println("********************************************************************************************************************************************");
+	}
+
+
+	public static void PrintViagemBicicleta(Viagem viagem, String email)
+	{
+		System.out.printf("%-25s%-25s%-20s%-15f%-15f%-10d%-15s%-15d\n",
+				email, viagem.data_Inicial, viagem.bicicleta.designacao,
+				viagem.bicicleta.raioRodas, viagem.bicicleta.valorViagem, viagem.bicicleta.peso,
+				viagem.bicicleta.tipoBicicleta, viagem.bicicleta.autonomia );
 	}
 }
