@@ -27,7 +27,7 @@ public class UtilizadorService implements IUtilizadorService {
 	}
 	
 	@Override
-	public List<Utilizador> GetUtilizadores() throws ServiceException {
+	public List<Utilizador> getUtilizadores() throws ServiceException {
 		try 
 		{
 			return utilizadorDAO.GetUtilizadores();

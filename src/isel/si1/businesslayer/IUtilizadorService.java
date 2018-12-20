@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface IUtilizadorService extends IService {
 
-	List<Utilizador> GetUtilizadores() throws ServiceException;
+	List<Utilizador> getUtilizadores() throws ServiceException;
 	int InsertPerson(String Email, int nif, String nome) throws DatabaseException, ServiceException;
 	int InsertUser(String Email, String referencia) throws ServiceException;
 	int DeleteUser(String Email, String userType) throws  ServiceException;

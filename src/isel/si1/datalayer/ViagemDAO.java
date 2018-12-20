@@ -23,18 +23,28 @@ public class ViagemDAO extends BaseDAO implements IViagemDAO {
 
         Date date = new Date();
 
-        java.sql.Date jdate = new java.sql.Date(date.getTime());
+        java.sql.Timestamp jdate = new java.sql.Timestamp(date.getTime());
+
+
 
         try{
-            String statementQuery = "Insert into Viagem (Id_Passe, DataInicial, Id_Bicicleta, Id_Estacao_Inicial) Values(?,?,?,?)";
+            String statementQuery = "IF NOT EXISTS " +
+                    "(select Id_Passe " +
+                    "from Viagem " +
+                    "where Id_Passe = ? and DataFinal is null) " +
+                    "Insert into Viagem (Id_Passe, DataInicial, Id_Bicicleta, Id_Estacao_Inicial)" +
+                                    " Values(?,?,?,?) ";
+
 
             conn = getConnectionFactory().getConnection();
             PreparedStatement preparedStatement = conn.prepareStatement(statementQuery);
 
             preparedStatement.setInt(1, id_Passe);
-            preparedStatement.setDate(2, jdate);
-            preparedStatement.setInt(3, id_Bicicleta);
-            preparedStatement.setInt(4, id_Estacao_Inicial);
+            preparedStatement.setInt(2, id_Passe);
+            preparedStatement.setTimestamp(3, jdate);
+            preparedStatement.setInt(4, id_Bicicleta);
+            preparedStatement.setInt(5, id_Estacao_Inicial);
+
 
             int inserted = preparedStatement.executeUpdate();
             conn.commit();

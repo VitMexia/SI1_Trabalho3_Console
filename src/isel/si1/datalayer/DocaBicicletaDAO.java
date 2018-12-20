@@ -12,7 +12,7 @@ import java.util.List;
 
 public class DocaBicicletaDAO extends BaseDAO implements IDocaBicicletaDAO {
     @Override
-    public List<DocaBicicleta> GetBicicletsDoca(int id_Estacao) throws DatabaseException {
+    public List<DocaBicicleta> getBicicletsDoca(int id_Estacao) throws DatabaseException {
         Connection conn = null;
 
         try {
@@ -28,9 +28,9 @@ public class DocaBicicletaDAO extends BaseDAO implements IDocaBicicletaDAO {
            // Statement stmt = conn.createStatement();
 
             PreparedStatement preparedStatement = conn.prepareStatement(statementQuery);
+
             preparedStatement.setInt(1, id_Estacao);
             preparedStatement.setString(2, "Ocupado");
-
 
             ResultSet rs = preparedStatement.executeQuery();
 
@@ -46,7 +46,7 @@ public class DocaBicicletaDAO extends BaseDAO implements IDocaBicicletaDAO {
             return container;
         } catch (Exception exception) {
             throw new DatabaseException(
-                    "Unable to list ESTACAO. \nCause: "
+                    "Unable to list DocaBicicleta. \nCause: "
                             + exception.getMessage(), exception);
         } finally {
             closeConnection(conn);

@@ -29,7 +29,7 @@ public class DocaBicicletaService implements IDocaBicicletaService {
     @Override
     public List<DocaBicicleta> GetDocaBicicleta(int id_Estacao) throws ServiceException {
         try {
-            return docaBicicletaDAO.GetBicicletsDoca(id_Estacao);
+            return docaBicicletaDAO.getBicicletsDoca(id_Estacao);
         }
         catch (DatabaseException exception) {
             throw new ServiceException(exception.getMessage(), exception);

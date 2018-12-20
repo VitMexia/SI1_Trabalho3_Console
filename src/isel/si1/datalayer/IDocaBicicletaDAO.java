@@ -7,5 +7,5 @@ import java.util.List;
 
 public interface IDocaBicicletaDAO {
 
-    List<DocaBicicleta> GetBicicletsDoca(int id_Estacao) throws DatabaseException;
+    List<DocaBicicleta> getBicicletsDoca(int id_Estacao) throws DatabaseException;
 }

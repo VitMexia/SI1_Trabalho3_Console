@@ -34,7 +34,7 @@ public class MainMenu {
 		menuItems.add(new MenuItem("Adicionar Utilizador",  Actions.class.getDeclaredMethod("AddUser", params)));
 		menuItems.add(new MenuItem("Apagar Utilizador/Funcionario",  Actions.class.getDeclaredMethod("DeleteEmployee", params)));
 		//menuItems.add(new MenuItem("Viagem Em Curso",  Actions.class.getDeclaredMethod("CurrentTrip", params)));
-		menuItems.add(new MenuItem("Criar Viagem",  Actions.class.getDeclaredMethod("CreateTrip", params)));
+		menuItems.add(new MenuItem("Criar Viagem",  Actions.class.getDeclaredMethod("createTrip", params)));
 
 	}
 }

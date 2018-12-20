@@ -30,29 +30,7 @@ public class BicicletaMenu {
 
     public ArrayList<BicicletaMenu.MenuItem> menuItems = null;
 
-    public BicicletaMenu() throws ServiceException {
 
-
-//        BicicletaService bicicletaService = new BicicletaService();
-//
-//        List<Bicicleta> refs = B.GetStations();
-//        Iterator<Estacao> itr = refs.iterator();
-//
-//        menuItems = new ArrayList<BicicletaMenu.MenuItem>();
-//
-//        while(itr.hasNext()){
-//
-//            Estacao estacao = itr.next();
-//
-//            BicicletaMenu.MenuItem item = new BicicletaMenu.MenuItem( estacao.id + ", " + estacao.localizacao, estacao.id );
-//            menuItems.add(item);
-//
-//        }
-
-
-
-
-    }
 
     public BicicletaMenu(int id_Estacao) throws ServiceException {
 

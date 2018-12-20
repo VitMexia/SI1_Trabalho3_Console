@@ -1,6 +1,7 @@
 package isel.si1.businesslayer;
 
 import isel.si1.datalayer.IViagemDAO;
+import isel.si1.datalayer.ViagemDAO;
 import isel.si1.datalayer.common.DatabaseException;
 import isel.si1.model.Viagem;
 
@@ -19,8 +20,8 @@ public class ViagemService implements IViagemService {
         this.viagemDAO = viagemDAO;
     }
 
-    public ViagemService(IViagemDAO viagemDAO) {
-        this.viagemDAO = viagemDAO;
+    public ViagemService() {
+        this.viagemDAO = new ViagemDAO();
     }
 
     @Override

@@ -1,7 +1,6 @@
 package isel.si1.console.presentationlayer;
 
 import isel.si1.businesslayer.*;
-import isel.si1.model.Bicicleta;
 import isel.si1.model.DocaBicicleta;
 import isel.si1.model.Utilizador;
 
@@ -91,7 +90,7 @@ public class Actions {
 	{
 		System.out.println("\nListing Utilizadores.");
 
-		List<Utilizador> users = utilizadorService.GetUtilizadores();
+		List<Utilizador> users = utilizadorService.getUtilizadores();
 		Iterator<Utilizador> it = users.iterator();
 
 		if(!it.hasNext())
@@ -233,58 +232,91 @@ public class Actions {
 	}
 
 
-	public void CreateTrip(Scanner input, Console console) throws ServiceException {
+	public void createTrip(Scanner input, Console console) throws ServiceException {
 
-		System.out.print("\nPlease select the start station:\n");
+		System.out.print("\nWho are you?:\n");
 
-		EstacaoMenu estacaoMenu = new EstacaoMenu();
+		ListUserMenus listUserMenus = new ListUserMenus();
 
-		for (int option = 0; option < estacaoMenu.menuItems.size(); ++option ) {
-			EstacaoMenu.MenuItem item = estacaoMenu.menuItems.get(option);
+		for (int option = 0; option < listUserMenus.menuItems.size(); ++option ) {
+			ListUserMenus.MenuItem item = listUserMenus.menuItems.get(option);
 			System.out.println(option + " - " + item.description);
 		}
-		int opcao = -1;
 
-		int estacaoID = -1;
+		int useroption = -1;
+		int id_passe = -1;
 
-		if (input.hasNextInt())
-		{
-			opcao = input.nextInt();
+		if(input.hasNextInt()){
 
-			estacaoID = estacaoMenu.menuItems.get(opcao).idEstacao;
+			useroption = input.nextInt();
+
+			id_passe = listUserMenus.menuItems.get(useroption).id_Passe;
 		}
 
-		if(estacaoID != -1){
-
-			DocaBicicletaService docaBicicletaService = new DocaBicicletaService();
-
-			List<DocaBicicleta> bicicletasEmEstacao = docaBicicletaService.GetDocaBicicleta(estacaoID);
-
-			if(bicicletasEmEstacao.size() > 0){
-
-				BicicletaMenu bicicletaMenu = new BicicletaMenu(estacaoID);
-
-				if(bicicletaMenu.menuItems.size()>0) {
-
-					System.out.print("Select one of the available Biciletas:\n");
-
-					for (int option = 0; option < bicicletaMenu.menuItems.size(); ++option) {
-						BicicletaMenu.MenuItem item = bicicletaMenu.menuItems.get(option);
-						System.out.println(option + " - " + item.description);
-					}
-
-					opcao = input.nextInt();
-
-					int bicicletaID = bicicletaMenu.menuItems.get(opcao).idBicicleta;
+		if(id_passe != -1) {
 
 
-				}
+			System.out.print("\nPlease select the start station:\n");
 
-			}else{
+			EstacaoMenu estacaoMenu = new EstacaoMenu();
 
-				System.out.print("No Bicicletas available at this Station!");
+			for (int option = 0; option < estacaoMenu.menuItems.size(); ++option) {
+				EstacaoMenu.MenuItem item = estacaoMenu.menuItems.get(option);
+				System.out.println(option + " - " + item.description);
+			}
+			int opcao = -1;
+
+			int estacaoID = -1;
+
+			if (input.hasNextInt()) {
+				opcao = input.nextInt();
+
+				estacaoID = estacaoMenu.menuItems.get(opcao).idEstacao;
 			}
 
+			if (estacaoID != -1) {
+
+				DocaBicicletaService docaBicicletaService = new DocaBicicletaService();
+				List<DocaBicicleta> bicicletasEmEstacao = docaBicicletaService.GetDocaBicicleta(estacaoID);
+
+				if (bicicletasEmEstacao.size() > 0) {
+
+					BicicletaMenu bicicletaMenu = new BicicletaMenu(estacaoID);
+
+					if (bicicletaMenu.menuItems.size() > 0) {
+
+						System.out.print("Select one of the available Biciletas:\n");
+
+						for (int option = 0; option < bicicletaMenu.menuItems.size(); ++option) {
+							BicicletaMenu.MenuItem item = bicicletaMenu.menuItems.get(option);
+							System.out.println(option + " - " + item.description);
+						}
+
+						opcao = input.nextInt();
+
+						int bicicletaID = bicicletaMenu.menuItems.get(opcao).idBicicleta;
+
+
+//					BicicletaService bicicletaService = new BicicletaService();
+//					List<Bicicleta> bicicletaList = bicicletaService.getAvailableBicicletas(id_Estacao);
+
+						ViagemService viagemService = new ViagemService();
+						int createdtrip = viagemService.createTrip(id_passe, bicicletaID, estacaoID);
+
+						if(createdtrip <1){
+							System.out.print("Viagem Failed to be created!");
+						}
+						else {
+							System.out.print("Viagem started!");
+						}
+					}
+
+				} else {
+
+					System.out.print("No Bicicletas available at this Station!");
+				}
+
+			}
 		}
 
 	}
